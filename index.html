@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PakEuropa - Coming Soon</title>
   <style>
     /* Reset styles */
@@ -82,6 +83,22 @@
       100% {
         transform: translate(0, 100vh) rotate(360deg);
         opacity: 0;
+      }
+    }
+
+    /* Media queries for mobile responsiveness */
+    @media (max-width: 768px) {
+      .text-container .main-text {
+        font-size: 1.5rem;
+      }
+      
+      .text-container .sub-text {
+        font-size: 0.9rem;
+      }
+      
+      .grain {
+        width: 36px;
+        height: 36px;
       }
     }
   </style>
