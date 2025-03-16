@@ -133,8 +133,8 @@
 
   <!-- Text container -->
   <div class="text-container">
-    <div class="main-text">Coming Soon</div>
-    <div class="sub-text">PakEuropa</div>
+    <div class="main-text"></div>
+    <div class="sub-text"></div>
   </div>
 
   <script>
@@ -191,6 +191,30 @@
     // Optional: listen for errors
     videoForward.addEventListener('error', e => console.error('Forward video error:', e));
     videoBackward.addEventListener('error', e => console.error('Backward video error:', e));
+
+    // 3) LANGUAGE TEXT ANIMATION
+    const languages = [
+      { main: "Coming Soon", sub: "PakEuropa" },
+      { main: "Prossimamente", sub: "PakEuropa" },
+      { main: "Hamarosan", sub: "PakEuropa" },
+      { main: "Demnächst", sub: "PakEuropa" },
+      { main: "Bientôt disponible", sub: "PakEuropa" },
+      { main: "جلد آرہا ہے", sub: "پاک یوروپا" }
+    ];
+    let currentLangIndex = 0;
+    const mainTextElement = document.querySelector('.text-container .main-text');
+    const subTextElement = document.querySelector('.text-container .sub-text');
+
+    function updateText() {
+      mainTextElement.textContent = languages[currentLangIndex].main;
+      subTextElement.textContent = languages[currentLangIndex].sub;
+      currentLangIndex = (currentLangIndex + 1) % languages.length;
+    }
+
+    // Initial update
+    updateText();
+    // Change language every 3 seconds (adjust as desired)
+    setInterval(updateText, 2000);
   </script>
 </body>
 </html>
