@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PakEuropa - Coming Soon</title>
+  <style>
+    /* Reset styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Both videos fill the screen behind everything */
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      display: none; /* Visibility managed via JS */
+    }
+
+    body {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      color: #fff;
+      background: #000; /* Backup background if video fails */
+    }
+
+    /* Container for text elements */
+    .text-container {
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    .text-container .main-text {
+      font-size: 2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    .text-container .sub-text {
+      font-size: 1rem;
+    }
+
+    /* Falling rice grains */
+    .grain {
+      position: absolute;
+      top: -50px;
+      width: 48px;
+      height: 48px;
+      background: url("assets/rice.png") no-repeat center/contain;
+      pointer-events: none;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    /* Combined keyframe for falling, swinging, spinning */
+    @keyframes fallSwingSpin {
+      0% {
+        transform: translate(0, -50px) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: translate(15px, 50vh) rotate(180deg);
+      }
+      100% {
+        transform: translate(0, 100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Error display styles */
+    #error-display {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(255, 0, 0, 0.8);
+      color: #fff;
+      font-size: 14px;
+      padding: 10px;
+      z-index: 9999;
+      max-height: 50vh;
+      overflow-y: auto;
+    }
+
+    /* Media queries for mobile responsiveness */
+    @media (max-width: 768px) {
+      .text-container .main-text {
+        font-size: 1.5rem;
+      }
+      .text-container .sub-text {
+        font-size: 0.9rem;
+      }
+      .grain {
+        width: 36px;
+        height: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Video 1 (FORWARD) -->
+  <video
+    class="bg-video"
+    id="videoForward"
+    muted
+    playsinline
+    preload="auto"
+    autoplay
+  >
+    <source src="assets/forward.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Video 2 (BACKWARD) -->
+  <video
+    class="bg-video"
+    id="videoBackward"
+    muted
+    playsinline
+    preload="auto"
+    autoplay
+  >
+    <source src="assets/reversed.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Text container -->
+  <div class="text-container">
+    <div class="main-text"></div>
+    <div class="sub-text"></div>
+  </div>
+  
+  <!-- Error display container -->
+  <div id="error-display" style="display:none;"></div>
+
+  <script>
+    // Utility: display error messages on screen
+    function displayError(errorMessage) {
+      const errorDisplay = document.getElementById('error-display');
+      if (errorDisplay.style.display === 'none') {
+        errorDisplay.style.display = 'block';
+      }
+      const errorItem = document.createElement('div');
+      errorItem.textContent = errorMessage;
+      errorDisplay.appendChild(errorItem);
+    }
+
+    // Improved console.error override to handle error objects
+    const originalConsoleError = console.error;
+    console.error = function(...args) {
+      const message = args.map(arg => {
+        if (arg instanceof Error) {
+          return arg.message;
+        } else if (typeof arg === 'object') {
+          try {
+            return JSON.stringify(arg);
+          } catch(e) {
+            return String(arg);
+          }
+        } else {
+          return String(arg);
+        }
+      }).join(' ');
+      displayError('Console error: ' + message);
+      originalConsoleError.apply(console, args);
+    };
+
+    // Global error handler for script errors
+    window.addEventListener("error", function(event) {
+      const message = `Error: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`;
+      displayError(message);
+    });
+
+    // Global unhandledrejection handler for promise errors
+    window.addEventListener("unhandledrejection", function(event) {
+      const message = `Unhandled Promise Rejection: ${event.reason}`;
+      displayError(message);
+    });
+
+    // 1) FALLING RICE ANIMATION
+    const NUM_GRAINS = 30; // Fewer grains for a less crowded effect
+
+    for (let i = 0; i < NUM_GRAINS; i++) {
+      const grain = document.createElement("div");
+      grain.classList.add("grain");
+
+      // Random start left position (0-100vw)
+      const startLeft = Math.random() * 100;
+      grain.style.left = startLeft + "vw";
+
+      // Random durations: fall duration and delay
+      const fallDuration = (Math.random() * 3) + 3; // 3-6 seconds
+      const delay = Math.random() * 5; // 0-5 seconds
+
+      grain.style.animationName = "fallSwingSpin";
+      grain.style.animationDuration = `${fallDuration}s`;
+      grain.style.animationDelay = `${delay}s`;
+
+      document.body.appendChild(grain);
+    }
+
+    // 2) FORWARD/BACKWARD VIDEO LOOP WITH SLOW PLAYBACK
+    const videoForward  = document.getElementById("videoForward");
+    const videoBackward = document.getElementById("videoBackward");
+
+    // Set slower playback rate for both videos
+    videoForward.playbackRate = 0.7;
+    videoBackward.playbackRate = 0.7;
+
+    // Show the forward video first
+    videoForward.style.display = "block";
+    videoForward.play().catch(err => console.error('Forward video play error:', err));
+
+    // Listen for error events on the video elements
+    videoForward.addEventListener('error', e => {
+      let errorDetail = videoForward.error ? "Code: " + videoForward.error.code : "No error detail";
+      console.error('Forward video error:', errorDetail);
+    });
+    videoBackward.addEventListener('error', e => {
+      let errorDetail = videoBackward.error ? ("Code: " + videoBackward.error.code) : "No error detail";
+      console.error('Backward video error:', errorDetail);
+    });
+
+    // When forward video ends, switch to the backward video
+    videoForward.addEventListener("ended", () => {
+      videoForward.style.display = "none";
+      videoBackward.style.display = "block";
+      videoBackward.currentTime = 0;
+      videoBackward.play().catch(err => console.error('Backward video play error:', err));
+    });
+
+    // When backward video ends, switch back to the forward video
+    videoBackward.addEventListener("ended", () => {
+      videoBackward.style.display = "none";
+      videoForward.style.display = "block";
+      videoForward.currentTime = 0;
+      videoForward.play().catch(err => console.error('Forward video play error:', err));
+    });
+
+    // Polling check for the backward video in case it fails without triggering errors
+    let backwardErrorLogged = false;
+    setInterval(() => {
+      // NETWORK_NO_SOURCE is defined as 3 according to the spec.
+      if (!backwardErrorLogged && videoBackward.networkState === 3) {
+        backwardErrorLogged = true;
+        console.error("Backward video network error: NETWORK_NO_SOURCE (3)");
+      }
+    }, 2000);
+
+    // 3) LANGUAGE TEXT ANIMATION
+    const languages = [
+      { main: "Coming Soon", sub: "PakEuropa" },
+      { main: "Prossimamente", sub: "PakEuropa" },
+      { main: "Hamarosan", sub: "PakEuropa" },
+      { main: "Demnächst", sub: "PakEuropa" },
+      { main: "Bientôt disponible", sub: "PakEuropa" },
+      { main: "جلد آرہا ہے", sub: "پاک یوروپا" }
+    ];
+    let currentLangIndex = 0;
+    const mainTextElement = document.querySelector('.text-container .main-text');
+    const subTextElement = document.querySelector('.text-container .sub-text');
+
+    function updateText() {
+      mainTextElement.textContent = languages[currentLangIndex].main;
+      subTextElement.textContent = languages[currentLangIndex].sub;
+      currentLangIndex = (currentLangIndex + 1) % languages.length;
+    }
+
+    // Initial text update and periodic change every 2 seconds
+    updateText();
+    setInterval(updateText, 2000);
+  </script>
+</body>
+</html>
