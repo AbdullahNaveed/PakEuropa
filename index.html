@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PakEuropa - Coming Soon</title>
+  
+  <!-- Video.js CSS -->
+  <link href="assets/video-js.css" rel="stylesheet" />
+  
+  <style>
+    /* Reset styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Video.js container styling */
+    .video-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -2;
+    }
+
+    /* The actual video element inside Video.js */
+    .video-js .vjs-tech {
+      object-fit: cover;  /* Ensures video covers the container */
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      color: #fff;
+      background: #000;  /* Fallback background color */
+    }
+
+    /* Text container */
+    .text-container {
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    .text-container .main-text {
+      font-size: 2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+    }
+
+    .text-container .sub-text {
+      font-size: 1rem;
+    }
+
+    /* Falling rice grains */
+    .grain {
+      position: absolute;
+      top: -50px;
+      width: 48px;
+      height: 48px;
+      background: url("assets/rice.png") no-repeat center/contain;
+      pointer-events: none;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes fallSwingSpin {
+      0% {
+        transform: translate(0, -50px) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: translate(15px, 50vh) rotate(180deg);
+      }
+      100% {
+        transform: translate(0, 100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Mobile responsive adjustments */
+    @media (max-width: 768px) {
+      .text-container .main-text {
+        font-size: 1.5rem;
+      }
+      .text-container .sub-text {
+        font-size: 0.9rem;
+      }
+      .grain {
+        width: 36px;
+        height: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Forward video using Video.js -->
+  <video id="videoForward" class="video-js" muted playsinline preload="auto">
+    <source src="assets/forward.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Backward video using Video.js -->
+  <video id="videoBackward" class="video-js" muted playsinline preload="auto">
+    <source src="assets/reversed.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Text container -->
+  <div class="text-container">
+    <div class="main-text">Coming Soon</div>
+    <div class="sub-text">PakEuropa</div>
+  </div>
+
+  <!-- Video.js library -->
+  <script src="https://vjs.zencdn.net/7.21.1/video.min.js"></script>
+  <script>
+    // Create falling rice animation
+    const NUM_GRAINS = 30; // Adjust the number of grains as needed
+    for (let i = 0; i < NUM_GRAINS; i++) {
+      const grain = document.createElement("div");
+      grain.classList.add("grain");
+      
+      // Random starting position for each grain
+      grain.style.left = (Math.random() * 100) + "vw";
+      
+      // Random animation duration (3-6 seconds) and delay (0-5 seconds)
+      const fallDuration = Math.random() * 3 + 3;
+      const delay = Math.random() * 5;
+      grain.style.animationName = "fallSwingSpin";
+      grain.style.animationDuration = `${fallDuration}s`;
+      grain.style.animationDelay = `${delay}s`;
+      
+      document.body.appendChild(grain);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize Video.js players for both videos
+      const forwardPlayer = videojs('videoForward', {
+          autoplay: false,    // We control when autoplay starts
+          muted: true,
+          controls: false,
+          loop: false
+      });
+      
+      const backwardPlayer = videojs('videoBackward', {
+          autoplay: false,
+          muted: true,
+          controls: false,
+          loop: false
+      });
+
+      forwardPlayer.ready(() => {
+          forwardPlayer.playbackRate(0.7);
+          const forwardEl = forwardPlayer.el();
+          forwardEl.style.display = "block";  // Show forward video initially
+          forwardPlayer.play().catch(err => console.error('Forward video play error:', err));
+      });
+
+      backwardPlayer.ready(() => {
+          backwardPlayer.playbackRate(0.7);
+          const backwardEl = backwardPlayer.el();
+          backwardEl.style.display = "none";  // Hide backward video initially
+      });
+      
+      const forwardEl = forwardPlayer.el();
+      const backwardEl = backwardPlayer.el();
+
+      // When forward video ends, switch to backward
+      forwardPlayer.on('ended', () => {
+          forwardEl.style.display = "none";
+          backwardEl.style.display = "block";
+          backwardPlayer.currentTime(0);
+          backwardPlayer.play().catch(err => console.error('Backward video play error:', err));
+      });
+
+      // When backward video ends, switch back to forward
+      backwardPlayer.on('ended', () => {
+          backwardEl.style.display = "none";
+          forwardEl.style.display = "block";
+          forwardPlayer.currentTime(0);
+          forwardPlayer.play().catch(err => console.error('Forward video play error:', err));
+      });
+
+      // Retry playback if autoplay gets blocked (e.g., after returning from another tab)
+      document.addEventListener("visibilitychange", () => {
+          if (!document.hidden) {
+              if (forwardEl.style.display !== "none") {
+                  forwardPlayer.play().catch(err => console.error('Retry forward play error:', err));
+              } else {
+                  backwardPlayer.play().catch(err => console.error('Retry backward play error:', err));
+              }
+          }
+      });
+    });
+  </script>
+</body>
+</html>
