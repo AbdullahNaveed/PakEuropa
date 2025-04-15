@@ -1,0 +1,24 @@
+/* Global styles for the globe part */
+body {
+  margin: 0;
+  background: #000;
+  font-family: sans-serif;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Center the globe container */
+.globe-container {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Styling for text labels on the globe */
+.label {
+  font-size: 12px;
+  fill: #fff;
+  pointer-events: none;
+  filter: url(#glow);
+}
