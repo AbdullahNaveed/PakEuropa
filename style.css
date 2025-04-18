@@ -984,18 +984,34 @@ body.nav-open .language-selector {
 }
 
 /* constrain content width so it doesn’t stretch too far on ultra‑wide screens */
+/* banner wrapper */
+#cookie-consent-banner {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* you can add background, z‑index, etc. here */
+}
+
+/* constrain width, center everything and make it flex */
 #cookie-consent-banner .content {
+  display: inline-flex;               /* inline‑flex so it shrinks to fit */
+  flex-wrap: wrap;                    /* allow wrapping on very narrow screens */
+  align-items: center;                /* vertical centering */
+  justify-content: center;            /* horizontal centering */
+  gap: clamp(0.5rem, 1vw, 1rem);       /* small flexible gap between text & buttons */
   max-width: clamp(300px, 80vw, 800px);
+  margin: auto;
+  padding: clamp(0.5rem, 2vw, 1rem);
   text-align: center;
 }
 
-/* make the text flexible and prevent overflow */
+/* let the text wrap naturally but not force‑fill the entire row */
 #cookie-consent-banner span {
-  flex: 1 1 auto;
-  min-width: 0;   /* allows text to wrap */
+  flex: 0 1 auto;
+  min-width: 0;                       /* allows flex children to shrink/wrap */
 }
 
-/* responsive button sizing */
+/* responsive buttons */
 #cookie-consent-banner button {
   flex: 0 0 auto;
   padding: clamp(0.25rem, 1vw, 0.75rem)
@@ -1013,11 +1029,11 @@ body.nav-open .language-selector {
   opacity: 0.8;
 }
 
-/* optional: force column layout on very small screens */
+/* stack vertically on really small viewports */
 @media (max-width: 360px) {
-  #cookie-consent-banner {
+  #cookie-consent-banner .content {
     flex-direction: column;
     text-align: center;
+    gap: clamp(0.5rem, 2vw, 1rem);  /* you could increase vertical gap if you like */
   }
 }
-
