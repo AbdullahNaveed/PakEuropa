@@ -1037,3 +1037,34 @@ body.nav-open .language-selector {
     gap: clamp(0.5rem, 2vw, 1rem);  /* you could increase vertical gap if you like */
   }
 }
+
+.footer-nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* allow links to wrap instead of overflowing */
+}
+
+.footer-nav a {
+  white-space: nowrap; /* prevent breaking words within a link */
+  font-size: 1rem; /* default size */
+  transition: font-size 0.3s ease;
+}
+
+/* Reduce font size on smaller screens */
+@media (max-width: 600px) {
+  .footer-nav a {
+    font-size: 0.85rem;
+  }
+}
+
+/* Further reduce font size on very small screens */
+@media (max-width: 400px) {
+  .footer-nav a {
+    font-size: 0.75rem;
+  }
+}
+
+.footer-nav {
+  font-size: clamp(0.75rem, 1vw + 0.5rem, 1rem);
+}
+
