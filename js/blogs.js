@@ -1,0 +1,136 @@
+// Define your blog data
+const blogsData = [
+  {
+    category: "BLOG",
+    title: "Rich History of Basmati Rice",
+    thumbnail: "blogs/thumbnail/1.jpg",
+    pdf: "blogs/blog1.pdf"
+  },
+  // Add more blogs here to test scrolling thoroughly
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const carouselUL = document.querySelector('.custom-blog-carousel'); // The UL element
+  const viewport = document.querySelector('.carousel-viewport');     // The new viewport div
+  const btnPrev = document.querySelector('.prev-btn');
+  const btnNext = document.querySelector('.next-btn');
+
+  if (!carouselUL || !viewport || !btnPrev || !btnNext) {
+    console.error('Carousel components (UL, viewport, or buttons) not found in DOM!');
+    return;
+  }
+
+  let currentTranslateX = 0;
+  let cardWidth = 260; // Default desktop card width
+  const gap = 16;      // Assuming 1rem = 16px for gap
+
+  // Function to update card width based on screen size
+  function updateCarouselCardWidth() {
+    if (window.innerWidth <= 767) { // Matches CSS media query
+      cardWidth = 200; // Mobile card width
+    } else {
+      cardWidth = 260; // Desktop card width
+    }
+  }
+
+  // Function to create a single blog card element
+  function createCardElement(blog) {
+    const li = document.createElement('li');
+    li.tabIndex = 0; // For accessibility (focusable)
+    li.innerHTML = `
+      <div class="card-wrapper">
+        <img src="${blog.thumbnail}" alt="${blog.title}" loading="lazy" />
+        <div class="card-content">
+          <p class="card-category">${blog.category}</p>
+          <h3 class="card-title">${blog.title}</h3>
+          <a href="blog.html?file=${encodeURIComponent(blog.pdf)}" class="button w-button card-link" aria-label="Read more about ${blog.title}">Read More</a>
+        </div>
+      </div>
+    `;
+
+    // Click listener for the whole card (if not clicking the link itself)
+    li.addEventListener('click', (e) => {
+      if (e.target.tagName.toLowerCase() !== 'a' && !e.target.closest('a')) {
+        window.location.href = `blog.html?file=${encodeURIComponent(blog.pdf)}`;
+      }
+    });
+
+    // Keyboard listener for 'Enter' key for accessibility
+    li.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        // If the focused element is the 'Read More' link, let it handle navigation
+        if (document.activeElement === li.querySelector('.card-link')) return;
+        window.location.href = `blog.html?file=${encodeURIComponent(blog.pdf)}`;
+      }
+    });
+    return li;
+  }
+
+  // Function to populate the carousel with blog cards
+  function populateCarouselWithData() {
+    blogsData.forEach(blog => {
+      carouselUL.appendChild(createCardElement(blog));
+    });
+  }
+
+  // Function to handle scrolling the carousel
+  function scrollCarouselLogic(direction) {
+    updateCarouselCardWidth(); // Ensure cardWidth is current for calculations
+
+    const scrollStepAmount = cardWidth + gap; // How much to move for one card
+    const numCardsTotal = blogsData.length;
+
+    // Calculate the total width of all cards and gaps in the UL
+    const totalContentWidthInUL = (numCardsTotal * cardWidth) + ((numCardsTotal - 1) * gap);
+
+    // Determine the visible content width inside the viewport (excluding viewport's own L/R padding)
+    let visibleContentWidthInViewport;
+    if (window.innerWidth <= 767) {
+      visibleContentWidthInViewport = 200; // 1 card of 200px
+    } else {
+      visibleContentWidthInViewport = (3 * 260) + (2 * gap); // 3 cards (260px) + 2 gaps
+    }
+
+    if (direction === 'next') {
+      currentTranslateX -= scrollStepAmount;
+    } else { // 'prev'
+      currentTranslateX += scrollStepAmount;
+    }
+
+    // Clamp currentTranslateX to prevent overscrolling
+
+    // Maximum negative translation (scrolling to the rightmost card)
+    // This is the total width of content minus the width of the visible area
+    const maxNegativeTranslateX = -(totalContentWidthInUL - visibleContentWidthInViewport);
+
+    if (currentTranslateX > 0) {
+      currentTranslateX = 0; // Cannot scroll past the beginning (leftmost)
+    }
+    // If total content is less than or fits within the viewport, no negative scroll needed.
+    if (totalContentWidthInUL <= visibleContentWidthInViewport) {
+        currentTranslateX = 0;
+    } else if (currentTranslateX < maxNegativeTranslateX) {
+      currentTranslateX = maxNegativeTranslateX; // Cannot scroll past the end (rightmost)
+    }
+    
+    carouselUL.style.transform = `translateX(${currentTranslateX}px)`;
+  }
+
+  // Initial setup
+  populateCarouselWithData();
+  updateCarouselCardWidth(); // Set initial cardWidth
+
+  // Event listeners for previous/next buttons
+  btnPrev.addEventListener('click', () => scrollCarouselLogic('prev'));
+  btnNext.addEventListener('click', () => scrollCarouselLogic('next'));
+
+  // Optional: Recalculate and reset on window resize for robustness
+  window.addEventListener('resize', () => {
+    // A simple reset: go to start and update dimensions.
+    // More sophisticated would be to try and maintain the current card index.
+    currentTranslateX = 0;
+    carouselUL.style.transform = `translateX(0px)`;
+    updateCarouselCardWidth();
+    // You might also want to re-evaluate button disabled states here if you implement them
+  });
+});
