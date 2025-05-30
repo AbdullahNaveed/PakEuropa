@@ -1267,10 +1267,12 @@ section#blogs {
   }
 
   .custom-blog-carousel li:hover .card-wrapper,
-  .custom-blog-carousel li:focus-within .card-wrapper {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.12); /* Original shadow */
-    transform: none; /* Remove scale */
-    z-index: auto; /* Remove elevated z-index */
+  .custom-blog-carousel li:focus-within .card-wrapper,
+  .custom-blog-carousel li:active .card-wrapper {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12) !important;
+    transform: none !important;
+    transition: none !important;
+    z-index: auto !important;
   }
 
   .carousel-viewport {
