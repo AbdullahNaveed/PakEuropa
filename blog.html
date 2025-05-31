@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PakEuropa Blog Viewer</title>
+
+  <!-- Main CSS and favicon -->
+  <link href="css/elysian-tennis.webflow.1919b59b5.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+
+  <style>
+    /* Styles specific to this page */
+    main#pdf-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      background: white;
+      border-radius: 8px;
+      min-height: 80vh;
+      overflow-x: auto;
+    }
+
+    /* Container for embedded Canva iframe */
+    .canva-embed-wrapper {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-top: 141.4286%;
+      padding-bottom: 0;
+      box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16);
+      margin-top: 1.6em;
+      margin-bottom: 0.9em;
+      overflow: hidden;
+      border-radius: 8px;
+      will-change: transform;
+    }
+
+    .canva-embed-wrapper iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Link below embed */
+    .canva-embed-link {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      text-decoration: none;
+      color: #0073e6;
+    }
+    .canva-embed-link:hover,
+    .canva-embed-link:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+
+    /* ================================
+       AUTHOR CARD STYLES
+       ================================= */
+    .author-card {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1rem 1.5rem;
+      margin: 2rem auto;            /* space above & below */
+      max-width: 800px;             /* or whatever fits your layout */
+    }
+    .author-card img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+    .author-card .author-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .author-card .author-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    .author-card .author-designation {
+      font-size: 1rem;
+      color: #555;
+      margin: 0.2rem 0;
+    }
+    .author-card .author-date {
+      font-size: 0.9rem;
+      color: #888;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- New standalone black header -->
+  <header style="background-color: black; color: white; position: relative; padding: 10px 20px; font-family: Arial, sans-serif;">
+    <div style="display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
+      <!-- Logo -->
+      <a href="index.html" style="display: inline-block;">
+        <img src="assets/logo.png" alt="PakEuropa Logo" style="height: 40px;" />
+      </a>
+
+      <!-- Hamburger menu button -->
+      <div id="hamburgerBtn" style="cursor: pointer; width: 30px; height: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+        <span style="display: block; height: 4px; background: white; border-radius: 2px;"></span>
+        <span style="display: block; height: 4px; background: white; border-radius: 2px;"></span>
+        <span style="display: block; height: 4px; background: white; border-radius: 2px;"></span>
+      </div>
+    </div>
+
+    <!-- Mobile nav overlay -->
+    <nav id="mobileNav" style="
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: black;
+      color: white;
+      display: none;
+      flex-direction: column;
+      padding: 2rem;
+      z-index: 9999;
+    ">
+      <button id="closeNavBtn" style="
+        align-self: flex-end;
+        background: transparent;
+        border: none;
+        font-size: 2rem;
+        color: white;
+        cursor: pointer;
+        margin-bottom: 2rem;
+      ">&times;</button>
+      <a href="index.html#products" style="color: white; font-size: 1.5rem; margin-bottom: 1rem; text-decoration: none;">Products</a>
+      <a href="index.html#operations" style="color: white; font-size: 1.5rem; margin-bottom: 1rem; text-decoration: none;">Operations</a>
+      <a href="index.html#about" style="color: white; font-size: 1.5rem; margin-bottom: 1rem; text-decoration: none;">About</a>
+      <a href="index.html#contact" style="color: white; font-size: 1.5rem; text-decoration: none;">Contact</a>
+    </nav>
+
+    <script>
+      // Hamburger toggle logic
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const mobileNav = document.getElementById('mobileNav');
+      const closeNavBtn = document.getElementById('closeNavBtn');
+
+      hamburgerBtn.addEventListener('click', () => {
+        mobileNav.style.display = 'flex';
+      });
+
+      closeNavBtn.addEventListener('click', () => {
+        mobileNav.style.display = 'none';
+      });
+    </script>
+  </header>
+
+  <!-- ===== MAIN CANVA EMBED CONTAINER ===== -->
+  <main id="pdf-container"></main>
+
+  <!-- ===== FOOTER copied exactly from index.html ===== -->
+  <footer class="background-color-black" style="padding: 2rem 0;">
+    <div class="container-large">
+      <div class="wrap_flex is-align-center is-justify-between" style="flex-wrap: wrap; gap: 1rem;">
+        <div class="footer-brand" style="display: flex; align-items: center;">
+          <img src="assets/logo.png" alt="PakEuropa Logo" style="height: 40px; width: auto;" />
+        </div>
+        <nav class="footer-nav" style="display: flex; gap: 1.5rem;">
+          <a href="index.html#home" class="text-color-white" style="text-decoration: none;" data-i18n="nav_home">Home</a>
+          <a href="index.html#products" class="text-color-white" style="text-decoration: none;" data-i18n="nav_products">Products</a>
+          <a href="index.html#operations" class="text-color-white" style="text-decoration: none;" data-i18n="nav_operations">Operations</a>
+          <a href="index.html#about" class="text-color-white" style="text-decoration: none;" data-i18n="nav_about">About</a>
+          <a href="index.html#contact" class="text-color-white" style="text-decoration: none;" data-i18n="nav_contact">Contact</a>
+        </nav>
+        <div class="footer-social" style="display: flex; gap: 1rem; align-items: center;">
+          <a href="https://www.linkedin.com/company/pakeuropa/" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-link">
+            <img src="assets/linkedin.svg" alt="LinkedIn" style="height: 24px; width: 24px;" />
+          </a>
+          <a href="https://www.facebook.com/PakEuropa" target="_blank" rel="noopener" aria-label="Facebook" class="social-link">
+            <img src="assets/fb_icon.svg" alt="Facebook" style="height: 24px; width: 24px;" />
+          </a>
+          <a href="https://www.instagram.com/pakeuropa/" target="_blank" rel="noopener" aria-label="Instagram" class="social-link">
+            <img src="assets/ig_icon.svg" alt="Instagram" style="height: 24px; width: 24px;" />
+          </a>
+        </div>
+      </div>
+      <div class="margin-top-16 text-color-lightgrey text-size-small" style="text-align: center;">
+        <p style="margin: 0;" data-i18n="footer_copyright">&copy; 2025 PakEuropa. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Parse the embedUrl and author info params from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const embedUrl    = urlParams.get('embedUrl');
+    const authorName  = urlParams.get('author');
+    const designation = urlParams.get('designation');
+    const pubDate     = urlParams.get('pubDate');
+
+    const pdfContainer = document.getElementById('pdf-container');
+
+    if (!embedUrl) {
+      pdfContainer.innerHTML = '<p>No blog embed URL specified.</p>';
+    } else {
+      const decodedUrl = decodeURIComponent(embedUrl);
+
+      // Create embed wrapper
+      const wrapperDiv = document.createElement('div');
+      wrapperDiv.className = 'canva-embed-wrapper';
+
+      // Create iframe
+      const iframe = document.createElement('iframe');
+      iframe.setAttribute('loading', 'lazy');
+      iframe.setAttribute('allowfullscreen', 'allowfullscreen');
+      iframe.setAttribute('allow', 'fullscreen');
+      iframe.src = decodedUrl;
+
+      wrapperDiv.appendChild(iframe);
+      pdfContainer.appendChild(wrapperDiv);
+
+      // Create author card if info exists
+      if (authorName || designation || pubDate) {
+        const authorCard = document.createElement('div');
+        authorCard.className = 'author-card';
+
+        const avatarImg = document.createElement('img');
+        avatarImg.src = 'assets/dummy-avatar.jpeg'; // Change path accordingly
+        avatarImg.alt = authorName;
+        authorCard.appendChild(avatarImg);
+
+        const infoWrapper = document.createElement('div');
+        infoWrapper.className = 'author-info';
+
+        if (authorName) {
+          const nameEl = document.createElement('p');
+          nameEl.className = 'author-name';
+          nameEl.textContent = authorName;
+          infoWrapper.appendChild(nameEl);
+        }
+
+        if (designation) {
+          const desigEl = document.createElement('p');
+          desigEl.className = 'author-designation';
+          desigEl.textContent = designation;
+          infoWrapper.appendChild(desigEl);
+        }
+
+        if (pubDate) {
+          // Format date as "Month Day, Year"
+          let formattedDate = pubDate;
+          try {
+            const dateObj = new Date(pubDate);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            formattedDate = dateObj.toLocaleDateString(undefined, options);
+          } catch (e) {
+            // If parsing fails, fallback to raw string
+          }
+
+          const dateEl = document.createElement('p');
+          dateEl.className = 'author-date';
+          dateEl.textContent = `Published on ${formattedDate}`;
+          infoWrapper.appendChild(dateEl);
+        }
+
+        authorCard.appendChild(infoWrapper);
+        pdfContainer.appendChild(authorCard);
+      }
+    }
+  </script>
+
+  <!-- Include jQuery and Webflow scripts for footer functionality if needed -->
+  <script src="js/jquery-3.5.1.min.js"></script>
+  <script src="js/webflow.adf43da44.js"></script>
+
+</body>
+</html>
