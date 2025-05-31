@@ -5,7 +5,7 @@ const blogsData = [
     title: "Rich History of Basmati Rice",
     thumbnail: "blogs/thumbnail/1.jpg",
     canvaEmbedUrl: "https://www.canva.com/design/DAGpAcma_7w/q6tRsSc83XHFnVc6UFLiWQ/view?embed",
-    author: "Fizza Hussain",
+    author: "Syeda Fizza Hussain",
     designation: "Marketing & Brand Development Team",
     pubDate: "2025-05-31"
   },
