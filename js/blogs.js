@@ -2,6 +2,15 @@
 const blogsData = [
   {
     category: "BLOG",
+    title: "Health Benefits of Basmati Rice",
+    thumbnail: "blogs/thumbnail/3.jpg",
+    canvaEmbedUrl: "https://www.canva.com/design/DAGqP8mL9aU/ZiWpxbsrWCEjiI62lTlW5A/view?embed",
+    author: "Syeda Fizza Hussain",
+    designation: "Marketing & Brand Development Team",
+    pubDate: "2025-06-13"
+  },
+  {
+    category: "BLOG",
     title: "The Real Story of Himalayan Pink Salt",
     thumbnail: "blogs/thumbnail/2.jpg",
     canvaEmbedUrl: "https://www.canva.com/design/DAGpemT6JbU/6hdYhUHUf41aGI_wJrIqgw/view?embed",
