@@ -2,6 +2,15 @@
 const blogsData = [
   {
     category: "BLOG",
+    title: "Health Benefits of Himalayan Pink Salt",
+    thumbnail: "blogs/thumbnail/4.jpg",
+    canvaEmbedUrl: "https://www.canva.com/design/DAGqvEhGl2I/H9g7jkUmXP5Ai34dPYXmLA/view?embed",
+    author: "Hina Shamsher",
+    designation: "Marketing & Brand Development Team",
+    pubDate: "2025-06-18"
+  },
+  {
+    category: "BLOG",
     title: "Health Benefits of Basmati Rice",
     thumbnail: "blogs/thumbnail/3.jpg",
     canvaEmbedUrl: "https://www.canva.com/design/DAGqP8mL9aU/ZiWpxbsrWCEjiI62lTlW5A/view?embed",
