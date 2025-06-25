@@ -36,6 +36,15 @@ const blogsData = [
     designation: "Marketing & Brand Development Team",
     pubDate: "2025-05-31"
   },
+  {
+    category: "BLOG",
+    title: "Basmati vs. The Rest",
+    thumbnail: "blogs/thumbnail/5.jpg",
+    canvaEmbedUrl: "https://www.canva.com/design/DAGrXL4aIPQ/R3IPX59tZA5bxhnBZUoSig/view?embed",
+    author: "Hina Shamsher",
+    designation: "Marketing & Brand Development Team",
+    pubDate: "2025-06-25"
+  },
   // add more blogs here
 ];
 
