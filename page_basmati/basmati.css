@@ -1,0 +1,463 @@
+/* Light, clean page — no truncation; elegant white cards */
+
+:root{
+  /* gentle design tokens for consistent rhythm & readability */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --radius-s: 10px;
+  --radius-m: 14px;
+  --radius-l: 16px;
+  --ink-strong: #1f2733;      /* softer than pure black */
+  --ink: #2a3443;
+  --ink-muted: #6f7a89;
+  --ink-soft: #8d97a6;
+  --line: #e6eaf0;
+  --line-soft: #eef2f7;
+  --bg-card: #ffffff;
+  --bg-card-grad: #fcfdff;
+  --lime: #ceff65;
+  --lime-soft: #eef9c9;
+  --badge-bg: #f7fafc;
+  --badge-line: #e6edf6;
+  --focus: #cfe7ff;
+  --measure: 68ch;            /* ideal reading width for long text */
+}
+
+.basmati-hero {
+  background: linear-gradient(180deg, #ffffff, #f7f9fc 80%);
+  padding: 3rem 0 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.basmati-hero .hero-sub { color: var(--ink-muted); }
+
+/* Layout: sidebar on desktop, stacked on mobile */
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  padding: 2rem 0 4rem;
+}
+@media (max-width: 992px){
+  .catalog-layout { grid-template-columns: 1fr; }
+  .panel-title { text-align: center; }
+}
+
+/* Sidebar (desktop only) */
+.category-sidebar { align-self: start; position: sticky; top: 1rem; }
+.sidebar-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+}
+.sidebar-title {
+  margin: 4px 4px 8px;
+  font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted);
+}
+.category-tabs { display: grid; gap: 6px; max-height: 65vh; overflow:auto; padding-right: 4px; }
+.cat-tab {
+  display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .6rem .7rem;
+  cursor: pointer; transition: background .2s, transform .1s, border-color .2s;
+}
+.cat-tab:hover { transform: translateX(2px); }
+.cat-tab[aria-selected="true"] { border-color: #bfe266; background: #fbfff3; }
+.cat-count {
+  font-size: .72rem; line-height: 1; color: #0b0c0d; background: #ceff65; border-radius: 999px; padding: .2rem .5rem;
+}
+@media (max-width: 992px){ .category-sidebar { display: none; } }
+
+/* Mobile category select */
+.category-mobile { display: none; margin-bottom: .75rem; }
+.category-mobile label {
+  display: block; font-size: .85rem; color: var(--ink-muted); margin-bottom: .25rem;
+}
+.category-mobile select {
+  width: 100%; height: 42px; border-radius: 10px; border: 1px solid var(--line); background: #fff; padding: 0 .6rem;
+}
+@media (max-width: 992px){ .category-mobile { display: block; } }
+
+/* Title */
+.panel-title {
+  color: #ceff65;
+  font-weight: 800;
+  letter-spacing: .01em;
+  margin: 4px 0 16px;   /* matches sidebar title spacing */
+  text-align: left;     /* desktop/tablet */
+}
+
+/* Loading + empty states */
+.loading { padding: .75rem 0; color: var(--ink-muted); }
+.empty {
+  background: #fff; color: var(--ink-muted); border: 1px dashed var(--line); border-radius: 12px; padding: 2rem; text-align:center;
+}
+
+/* Cards grid */
+.cards-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* ===== CARD: exterior stays elegant with lime top accent ===== */
+.card {
+  position: relative;
+  background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-card-grad) 60%);
+  border: 1px solid #e8edf5;
+  border-radius: var(--radius-l);
+  box-shadow:
+    0 10px 24px rgba(17, 24, 39, 0.06),
+    0 2px 6px rgba(17, 24, 39, 0.04);
+  display: grid;
+  grid-template-rows: minmax(44px,min-content) 1fr minmax(56px,min-content);  /* header | content | meta pinned */
+  padding: 18px;
+  min-height: 320px;                           /* aligns rows across cards of different content */
+  transition: box-shadow .2s ease, transform .15s ease, border-color .2s ease;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  border-radius: var(--radius-l) var(--radius-l) 0 0;
+  background: linear-gradient(90deg, var(--lime-soft), var(--lime) 35%, #bfe266 70%, var(--lime-soft));
+  opacity: .75;
+  pointer-events: none;
+}
+.card:hover {
+  transform: translateY(-1px);
+  border-color: #e1e8f3;
+  box-shadow:
+    0 14px 28px rgba(17, 24, 39, 0.08),
+    0 4px 10px rgba(17, 24, 39, 0.05);
+}
+.card:focus-within {
+  outline: 0;
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 3px rgba(80,145,255,.15),
+    0 10px 24px rgba(17,24,39,.07);
+}
+
+/* ===== INSIDE THE CARD: rock-solid, dynamic-friendly typography & layout ===== */
+
+/* Header: stable height, balanced title, badges wrap neatly */
+.card header{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px dashed var(--line-soft);
+  min-height: 44px;                               /* equal header heights */
+}
+.card .type{
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(.98rem, .9rem + .2vw, 1.1rem);
+  letter-spacing: .005em;
+  color: var(--ink-strong);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+@supports not (text-wrap: balance){
+  .card .type{ word-break: break-word; }
+}
+.card .badges{ display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; align-items:center; min-height: 28px; }
+.card .badge{
+  font-size: .75rem; line-height: 1;
+  padding: .38rem .55rem;
+  border-radius: 10px;
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-line);
+  color: #5b6576;
+  white-space: nowrap;
+}
+
+/* Content area: readable measure; handles lists, tables, code, links gracefully */
+.card .desc{
+  color: var(--ink);
+  margin: 6px 0 12px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  max-width: var(--measure);                       /* perfect measure without truncation */
+  overflow-wrap: anywhere;                         /* breaks very long tokens */
+  hyphens: auto;
+}
+
+/* Establish vertical rhythm inside desc */
+.card .desc > * + * { margin-top: .6em; }
+
+/* Fine-tuned text styles */
+.card .desc p{ margin: 0; }
+.card .desc a{
+  color: #2a5bd7;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.card .desc strong{ font-weight: 700; color: #1f2733; }
+.card .desc em{ font-style: italic; color: #2d3748; }
+
+/* Headings that may appear inside description */
+.card .desc h4,
+.card .desc h5,
+.card .desc h6{
+  margin: .2em 0 .1em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink-strong);
+  text-wrap: balance;
+}
+.card .desc h4{ font-size: 1rem; }
+.card .desc h5{ font-size: .95rem; color: var(--ink); }
+.card .desc h6{ font-size: .9rem; color: var(--ink); }
+
+/* Lists: tidy spacing and subtle custom markers */
+.card .desc ul,
+.card .desc ol{ padding-left: 1.2rem; margin: 0; }
+.card .desc li{ margin: .35em 0; }
+.card .desc ul li::marker{ color: #b0d94a; }       /* lime-tinted bullets */
+.card .desc ol li::marker{ color: var(--ink-soft); }
+
+/* Blockquotes: soft card-within-card look */
+.card .desc blockquote{
+  margin: 0;
+  padding: .75rem .9rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--lime);
+  border-radius: var(--radius-s);
+  background: #fcfffa;
+  color: #2b3744;
+}
+
+/* Code & pre: compact and scrollable if long */
+.card .desc code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: .85em;
+  padding: .15em .35em;
+  border-radius: 6px;
+  background: #f5f7fb;
+  border: 1px solid #e8ecf4;
+  color: #273248;
+}
+.card .desc pre{
+  margin: 0;
+  padding: .8rem .9rem;
+  overflow:auto;
+  border-radius: 10px;
+  background: #f7f9fc;
+  border: 1px solid #e8ecf4;
+}
+
+/* Tables that can appear in dynamic content */
+.card .desc table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+.card .desc th,
+.card .desc td{
+  padding: .55rem .65rem;
+  border-top: 1px solid var(--line-soft);
+  vertical-align: top;
+  text-align: left;
+}
+.card .desc th{
+  background: #fbfcfe;
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+.card .desc tr:first-child th,
+.card .desc tr:first-child td{ border-top: 0; }
+
+/* Images inside description */
+.card .desc img{
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+/* ===== Meta row: pinned, aligned, resilient to missing/long values ===== */
+.meta{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 10px;
+  border-top: 1px dashed var(--line-soft);
+  padding-top: 12px;
+  align-items: start;
+}
+.meta .item{
+  display: grid;
+  grid-template-rows: min-content auto; /* label then value */
+  gap: 4px;
+  min-width: 0;
+}
+.meta .label{
+  font-size: .75rem;
+  color: var(--ink-soft);
+  letter-spacing: .02em;
+  text-transform: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.meta .value{
+  font-weight: 600;
+  color: #202a39;
+  line-height: 1.4;
+  min-height: 1.4em;                /* keeps rows aligned even if empty */
+  overflow-wrap: anywhere;          /* long tokens wrap without breaking layout */
+}
+/* If a value is empty, show a subtle dash to keep alignment */
+.meta .value:empty::after{ content: "—"; color: #a3acb9; }
+
+/* Optional micro-badges inside values */
+.meta .value .pill{
+  display:inline-block;
+  padding:.25rem .45rem;
+  border:1px solid var(--badge-line);
+  border-radius:999px;
+  background:var(--badge-bg);
+  font-weight:600; font-size:.75rem; color:#3a4352;
+}
+
+/* Responsive meta columns */
+@media (max-width: 640px){
+  .meta{ grid-template-columns: 1fr 1fr; }
+}
+
+/* --- ALIGN TOPS: cards start at same level as the left "Categories" card --- */
+.catalog-layout { align-items: start; }
+.category-sidebar { top: 0; }
+.panel-title { margin: 4px 0 16px !important; }
+
+/* --- GRID LAYOUT: wider cards, max 2 per row on web/tablet, 1 centered on phone --- */
+.cards-grid { gap: 20px; }
+
+/* Phones: single, centered card */
+@media (max-width: 767px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .card {
+    width: 100%;
+    max-width: 740px;
+    margin-inline: auto;
+  }
+}
+
+/* Tablet & up: at most two columns that take lots of width */
+@media (min-width: 768px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .card { width: 100%; }
+}
+
+/* --- Put the results panel right under the navbar --- */
+.container-large.basmati-main,
+.container-large.basmati-main .catalog-layout,
+.container-large.basmati-main .results-panel {
+  padding-top: 10px !important;
+  margin-top: 0 !important;
+}
+/* stop h2 margin from collapsing upward and creating extra space */
+.container-large.basmati-main .results-panel { overflow: hidden; }
+
+/* --- Active category title: alignment + blurred black shadow --- */
+#activeCategoryTitle {
+  margin-top: 0 !important;
+  margin-bottom: 16px !important;
+  text-align: left !important;
+  text-shadow:
+    0 8px 20px rgba(0,0,0,.38),
+    0 3px 8px  rgba(0,0,0,.32);
+}
+@media (max-width: 992px){
+  #activeCategoryTitle { text-align: center !important; }
+}
+
+#activeCategoryTitle,
+.panel-title {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+}
+
+
+/* === TWEAK 1: Bigger, bolder card titles (keeps balance) === */
+.card .type{
+  font-size: clamp(1.15rem, 1rem + 0.8vw, 1.65rem) !important;
+  letter-spacing: .01em;
+  line-height: 1.2;
+}
+
+/* === TWEAK 2: Meta becomes separate sections (like desc), not columns === */
+.meta{
+  grid-template-columns: 1fr !important;   /* stack items vertically */
+  gap: 12px !important;
+  padding-top: 14px !important;
+  border-top: 1px dashed var(--line-soft) !important;
+}
+
+/* section cardlets */
+.meta .item{
+  position: relative;
+  display: grid;
+  grid-template-rows: min-content auto;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px 12px 12px 14px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+/* subtle lime accent on each section */
+.meta .item::before{
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 12px 0 0 12px;
+  background: linear-gradient(180deg, var(--lime-soft), var(--lime));
+  opacity: .9;
+}
+
+/* tidy label/value typography */
+.meta .label{
+  font-size: .8rem !important;
+  color: var(--ink-soft) !important;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.meta .value{
+  margin-top: 2px;
+  font-size: 1.05rem;            /* slightly larger for scannability */
+  font-weight: 700;
+  color: var(--ink-strong);
+  line-height: 1.35;
+  min-height: 1.35em;
+  overflow-wrap: anywhere;
+}
+/* show a dash when value is missing so sections stay aligned */
+.meta .value:empty::after{ content: "—"; color: #a3acb9; }
+
+/* ensure stacking on all breakpoints (override earlier rule) */
+@media (max-width: 640px){
+  .meta{ grid-template-columns: 1fr !important; }
+}
