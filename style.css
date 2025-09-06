@@ -1,0 +1,1424 @@
+/* Global Reset and Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Always show vertical scrollbar to avoid layout shift */
+html {
+  overflow-y: scroll;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  font-family: sans-serif; /* Updated to use only sans-serif */
+  scroll-behavior: smooth;
+}
+
+/* Prevent scrolling until initial landing animation is done */
+.no-scroll {
+  overflow: hidden;
+}
+
+/* =========================================
+   Our team
+   ========================================= */
+
+/* Team Section */
+#team {
+  padding: 60px 20px;
+  background: #f9f9f9; /* Light background color */
+}
+
+.team-title {
+  text-align: left;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.team-title h2 {
+  font-size: 2.8em;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Team Cards Container */
+.team-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual Team Card */
+.team-card {
+  background: white;
+  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+}
+
+.team-card:hover {
+  transform: translateY(-10px); /* Hover effect to lift the card */
+}
+
+/* Card Image */
+.card-image {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Card Content */
+.card-content {
+  padding: 20px;
+  background: #ffffff;
+}
+
+.card-content h3 {
+  font-size: 1.6em;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.card-content p {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.learn-more-btn {
+  background-color: #6c63ff;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.learn-more-btn:hover {
+  background-color: #5b54e1;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .team-cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .team-card {
+    width: 90%;
+    margin-bottom: 30px;
+  }
+
+  .team-title h2 {
+    font-size: 2.2em;
+  }
+}
+
+
+/* =========================================
+   Certifications Style
+   ========================================= */
+
+@keyframes slides {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.logos {
+  overflow: hidden;
+  padding: 30px 0;
+  white-space: nowrap;
+  position: relative;
+}
+
+.logos:before, .logos:after {
+  position: absolute;
+  top: 0;
+  content: '';
+  width: 250px;
+  height: 100%;
+  z-index: 2;
+}
+
+.logos:before {
+  left: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), rgb(255, 255, 255));
+}
+
+.logos:after {
+  right: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(255, 255, 255));
+}
+
+.logo_items {
+  display: inline-block;
+  animation: 35s slides infinite linear;
+  white-space: nowrap;
+}
+
+.logos:hover .logo_items {
+  animation-play-state: paused;
+}
+
+.logo_items img {
+  height: 40vh; /* Logos take 40% of viewport height */
+  width: auto; /* Maintain aspect ratio */
+  margin-right: 10px; /* Space between logos */
+}
+
+/* Media Queries for Responsiveness */
+
+/* For larger screens, we want 4 logos visible */
+@media screen and (min-width: 1200px) {
+  .logo_items {
+    width: calc(25% - 10px); /* 4 logos visible at once, with space between */
+  }
+}
+
+/* For medium screens */
+@media screen and (max-width: 1200px) {
+  .logo_items {
+    width: calc(33.33% - 10px); /* 3 logos visible at once */
+  }
+
+  .logos {
+    padding: 20px 0;
+  }
+
+  .logo_items img {
+    height: 35vh; /* Adjust logo height for medium screens */
+  }
+}
+
+/* For smaller screens */
+@media screen and (max-width: 900px) {
+  .logo_items {
+    width: calc(50% - 10px); /* 2 logos visible at once */
+  }
+
+  .logos {
+    padding: 15px 0;
+  }
+
+  .logo_items img {
+    height: 30vh; /* Adjust logo height for smaller screens */
+  }
+
+  .logo_items {
+    animation: 40s slides infinite linear; /* Slow down the animation */
+  }
+}
+
+/* For very small screens */
+@media screen and (max-width: 600px) {
+  .logo_items {
+    width: 100%; /* 1 logo visible at a time */
+  }
+
+  .logos {
+    padding: 10px 0;
+  }
+
+  .logo_items img {
+    height: 40vh; /* Keep logo height on smaller screens */
+  }
+
+  .logo_items {
+    animation: 50s slides infinite linear; /* Slow down the animation more */
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .logos {
+    padding: 5px 0; /* Minimize padding on ultra-small screens */
+  }
+
+  .logo_items img {
+    height: 40vh; /* Keep logo height consistent on very small screens */
+  }
+}
+
+
+
+/* =========================================
+   Globe Style
+   ========================================= */
+/* Operations Section Styles */
+#operations {
+  background: #121212; /* Dark background */
+  background-color: var(--black);
+  color: #ffffff;
+  padding: 60px 20px;  /* Increase padding as needed */
+}
+
+/* Container for Stats + Globe */
+.ops-container {
+  display: flex;
+  flex-wrap: wrap;             /* Allows wrapping on smaller screens */
+  align-items: center;
+  justify-content: space-between;  /* Space them out on larger screens */
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 50px; /* increased from 20px to 50px for clarity */
+  padding: 0 20px; /* or add more horizontal padding as needed */
+}
+
+/* Left Column: Stats Cards */
+.stats-cards {
+  flex: 1 1 400px; /* Grows/shrinks with a base width of 400px */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+/* Neon Stat Cards - Always Visible Glow */
+.stat-card {
+  position: relative;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  overflow: hidden;
+  background: #2c2c2c; /* Or your brand's dark neutral color */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* subtle glow */
+}
+
+/* The neon gradient behind the card */
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 15px;
+  z-index: -2;
+  filter: blur(3px); 
+  background: linear-gradient(45deg, #6c63ff, #ff00ff, #6c63ff);
+}
+
+/* Keep card content readable */
+.stat-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #1e1e1e; /* Same as card background */
+  opacity: 0.9; /* or reduce further if the glow is too strong */
+  border-radius: 15px;
+  z-index: -1;
+}
+
+/* Right Column: Globe Wrapper */
+.globe-wrapper {
+  flex: 1 1 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;  /* Add a fixed height to ensure it's visible */
+}
+
+
+/* Make the SVG responsive */
+.globe-wrapper svg {
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+  width: 100%;
+  height: auto;
+  max-width: 800px; /* bigger on desktop for clarity */
+}
+
+/* Responsive Layout: Stack them on narrow screens */
+@media (max-width: 768px) {
+  .ops-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .stats-cards,
+  .globe-wrapper {
+    flex: 1 1 100%;
+  }
+
+  /* Center the globe and add top margin if needed */
+  .globe-wrapper {
+    margin: 20px auto 0 auto;
+  }
+
+  /* Adjust the globe size for smaller screens if desired */
+  .globe-wrapper svg {
+    max-width: 300px;
+  }
+}
+
+
+
+/* =========================================
+   Desktop / Larger Screen Styles
+   ========================================= */
+.navbar {
+  position: absolute;
+  top: 0;
+  height: 15%;
+  width: 100%;
+  /* Your existing grid layout for desktop: */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 15px 40px;
+  background: transparent;
+  z-index: 9999; /* Ensure nav is above overlays */
+}
+
+/* Desktop nav links */
+.nav-left, .nav-right {
+  display: flex;
+  gap: 30px;
+}
+
+/* Center logo on desktop via the grid middle column */
+.nav-logo {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.nav-logo img {
+  width: 120px; /* adjust as needed */
+}
+
+/* Hamburger hidden by default (desktop) */
+.hamburger-menu {
+  display: none;
+}
+
+
+/* Landing Page Styling */
+.landing {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  /* You can keep transitions on properties that you aren’t controlling with JS */
+  transition: height 0.5s ease, border-radius 0.5s ease;
+  border-radius: 0;
+}
+
+
+.landing.shrink {
+  height: 50vh;
+  width: 70%;       /* Reduce width to reveal the rounded corners */
+  margin: 0 auto;   /* Center the landing section */
+  border-radius: 20px; /* Adjust the value for the desired roundness */
+}
+
+
+/* Video Background */
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the video fills the container and may crop the edges */
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.video-background.fade-out {
+  opacity: 0;
+}
+
+.video-background.fade-in {
+  opacity: 1;
+}
+
+/* Overlay for Dark Transparent Filter */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  transition: background 0.5s ease;
+}
+.landing.no-overlay .overlay {
+  background: rgba(0, 0, 0, 0);
+}
+
+/* Overlay Text (Centered) */
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  font-size: 1.5em; /* original large size */
+  transition: all 0.5s ease;
+}
+.overlay-text.shrink {
+  font-size: 0.5em; /* adjust to desired smaller size */
+  top: 22%;      /* shift it to the left to make room */
+  transform: translate(-50%, -50%);
+
+  /* Add text shadow for depth */
+  text-shadow:
+  -2px -2px 2px rgba(0, 0, 0, 0.8),
+   2px -2px 2px rgba(0, 0, 0, 0.8),
+  -2px  2px 2px rgba(0, 0, 0, 0.8),
+   2px  2px 2px rgba(0, 0, 0, 0.8),
+   0px  0px 6px rgba(0, 0, 0, 0.8); /* center glow-like shadow */
+
+  color: #fcd96b; /* match star color */
+
+
+
+}
+.overlay-text h1 {
+  font-size: 4em;
+}
+
+/* Scroll-triggered Text (Bottom Center) */
+/* Initially hide the scroll text */
+.scroll-text {
+  position: absolute;
+  opacity: 0;
+  color: white;
+  transition: all 0.5s ease;
+  top: 70%; /* start lower */
+  left: 50%;
+  transform: translate(-50%, 20%); /* offset down */
+}
+.scroll-text.appear {
+  opacity: 1;
+  font-size: 2.5em;   /* bigger font size for emphasis */
+  top: 85%;
+  left: 50%;         /* position it next to the PakEuropa text */
+  transform: translate(-50%, -50%);
+
+  text-shadow:
+  -2px -2px 2px rgba(0, 0, 0, 0.2),
+   2px -2px 2px rgba(0, 0, 0, 0.2),
+  -2px  2px 2px rgba(0, 0, 0, 0.2),
+   2px  2px 2px rgba(0, 0, 0, 0.2),
+   0px  0px 6px rgba(0, 0, 0, 0.2); /* center glow-like shadow */
+}
+
+@media (max-width: 768px) {
+.scroll-text.appear {
+  opacity: 1;
+  font-size: 2.5em;   /* bigger font size for emphasis */
+  top: 70%;
+  left: 50%;         /* position it next to the PakEuropa text */
+  transform: translate(-50%, -50%);
+
+  text-shadow:
+  -2px -2px 2px rgba(0, 0, 0, 0.2),
+   2px -2px 2px rgba(0, 0, 0, 0.2),
+  -2px  2px 2px rgba(0, 0, 0, 0.2),
+   2px  2px 2px rgba(0, 0, 0, 0.2),
+   0px  0px 6px rgba(0, 0, 0, 0.2); /* center glow-like shadow */
+}
+}
+
+
+/* nav bar link styling: white text and no underline */
+.navbar a {
+  text-decoration: none;
+  color: white;
+}
+
+/* Left & Right nav Containers */
+.nav-left,
+.nav-right {
+  color: var(--white);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  justify-content: center;
+  align-items: center;
+  padding: .1rem .5rem;
+  font-family: Coolvetica Condensed, sans-serif;
+  font-size: 1.325rem;
+  line-height: 1;
+  text-decoration: none;
+  display: flex;
+  position: relative;
+
+  text-shadow:
+  -2px -2px 2px rgba(0, 0, 0, 0.4),
+   2px -2px 2px rgba(0, 0, 0, 0.4),
+  -2px  2px 2px rgba(0, 0, 0, 0.4),
+   2px  2px 2px rgba(0, 0, 0, 0.4),
+   0px  0px 6px rgba(0, 0, 0, 0.4); /* center glow-like shadow */
+}
+
+.nav-left {
+  justify-content: flex-end;
+}
+
+.nav-right {
+  justify-content: flex-start;
+}
+
+/* Center Logo */
+.nav-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 40px;
+}
+.nav-logo img {
+  width: 120px;
+}
+
+/* Other Sections Styling */
+section {
+  padding: 100px 20px 60px;
+  min-height: 100vh;
+  text-align: center;
+}
+.section-title {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+/* Card Template */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.card {
+  background: white;
+  width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.card-content {
+  padding: 20px;
+}
+.card-content h3 {
+  margin-bottom: 10px;
+}
+.card-content p {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Footer Styling */
+footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+
+
+/* Responsive Adjustments */
+/* =========================================
+   Mobile / Small Screen Overrides
+   ========================================= */
+/* Hide mobile nav by default */
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  /* make the whole wrapper translucent black */
+  .language-selector {
+    display: inline-block;
+    background-color: transparent; !important;
+    /* if you need padding around the select */
+    font-size: 0.75rem;          /* about 75% of normal size */
+    padding: 0.2rem 0.4rem;      /* tighter padding */
+    border-radius: 3px;
+    margin-top: 1.1rem;   /* <-- push it down 1rem */
+  }
+
+  /* the actual <select> stays transparent so you see the wrapper color */
+  .language-selector select {
+    background: rgba(0, 0, 0, 0.2) !important; 
+    color: white !important; 
+    border: 1px solid white !important; 
+    /* if you’d like some inner padding */
+    font-size: 0.75rem !important;          /* about 75% of normal size */
+    padding: 0.2rem 1.5rem 0.2rem 0.4rem !important;  /* left/right gives room for arrow */
+    min-width: 2.5rem !important;           /* small but still clickable */
+  }
+
+  /* the dropdown arrow */
+  .language-selector::after {
+    font-size: 0.75rem !important;          /* smaller arrow */
+    color: white !important; 
+  }
+
+
+  /* Hide desktop links on mobile */
+  .nav-left,
+  .nav-right {
+    display: none;
+  }
+
+  /* Make the navbar simpler on mobile: just logo + hamburger */
+  .navbar {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background: transparent;
+  }
+  
+  .nav-logo {
+    margin-top: 25px;
+  }
+  
+  /* Show the hamburger icon on mobile */
+  .hamburger-menu {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+  }
+  /* Style the hamburger lines (make them black or white as needed) */
+  .hamburger-icon span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px 0;
+    background: #fff;  /* If your video background is dark, keep them white */
+  }
+
+  /* FULL-SCREEN white mobile nav overlay */
+  .mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: #fff;     /* White background */
+    color: #000;          /* Black text */
+    padding: 20px;
+    z-index: 10000;
+    transform: translateX(100%); 
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Left-align the links */
+    justify-content: flex-start;
+  }
+
+  /* When .mobile-nav has "active" class, it slides in */
+  .mobile-nav.active {
+    transform: translateX(0);
+  }
+
+  /* Header with close button */
+  .mobile-nav-header {
+    width: 100%;
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2em;
+    cursor: pointer;
+    color: #000; /* Black "X" for contrast on white background */
+  }
+
+  /* Mobile nav links - left-aligned, same font style as "Get a Qoute" */
+  .mobile-nav a {
+    text-decoration: none;
+    font-family: "Coolvetica Condensed", sans-serif; /* Match your "Get a Quote" font if that's what you used */
+    font-size: 1.2em;
+    color: #000;   
+    margin: 1.5rem 0;
+    width: 100%;   
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.5rem;
+  }
+}
+
+
+/* Keyframes for fadeInUp */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.heading-style-h2 .is-word {
+  opacity: 0;
+  transform: translateY(150px);  /* Increased distance from the bottom */
+  transition: opacity 1s ease-out, transform 1s ease-out; /* Longer duration for a smoother effect */
+}
+
+.heading-style-h2.visible .is-word {
+  opacity: 1;
+  transform: translateY(0);
+  color: black;
+}
+
+.heading-style-h2-white {
+  text-align: center; /* or left, but with enough margin so it feels intentional */
+  margin-bottom: 40px; /* add more spacing below the title */
+}
+
+.heading-style-h2-white .is-word-white {
+  opacity: 0;
+  transform: translateY(150px);  /* Increased distance from the bottom */
+  transition: opacity 1s ease-out, transform 1s ease-out; /* Longer duration for a smoother effect */
+  white-space: nowrap;
+}
+
+.heading-style-h2-white.visible .is-word-white {
+  opacity: 1;
+  transform: translateY(0);
+  color: white;
+  white-space: nowrap;
+}
+
+.label {
+  filter: url(#greenGlow);
+  stroke: --green;
+  stroke-width: 0.2px;
+}
+
+
+/* Make the form itself a vertical (column) flex layout */
+.email_form {
+  display: flex;
+  flex-direction: column; 
+  gap: 2rem; /* optional, for spacing between rows */
+}
+
+/* Only this row is a flex row, for Name & Email side by side */
+.qoute-row {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Let both "Name" & "Email" fields share equal width */
+.qoute-row .form-field-wrapper {
+  flex: 1;
+}
+
+/* The message block sits on its own row, full width */
+.qoute-message {
+  width: 100%;
+  margin-top: 0; /* or your preferred spacing */
+}
+
+/* Right-align the "Send" button */
+.qoute-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+/* Smooth fade-up animation */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+body.nav-open .language-selector {
+  display: none !important;
+}
+
+.language-selector {
+  position: absolute !important;
+  top: 20px;   /* adjust as needed */
+  left: 40px; /* adjust as needed */
+  margin-left: 0 !important; 
+  z-index: 10001; /* Optionally, push the language selector even above the header if needed */
+}
+
+.language-selector {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  z-index: 10001; /* Optionally, push the language selector even above the header if needed */
+}
+
+.language-selector select,
+.language-selector-mobile select {
+  /* Remove default browser appearance */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  /* Basic styling */
+  padding: 0.5rem 2rem 0.5rem 0.5rem;  /* Leave right padding for arrow */
+  font-size: 1rem;
+  font-family: sans-serif;            /* ensures consistent font */
+  
+  background: rgba(0, 0, 0, 0.2) !important; 
+  color: white !important; 
+  border: 1px solid white !important; 
+  border-radius: 4px;
+  cursor: pointer;
+  
+  /* (Optional) You can set a fixed width if you want: */
+  /* width: 120px; */
+}
+
+/* Remove the outline when focused */
+.language-selector select:focus,
+.language-selector-mobile select:focus {
+  outline: none;
+  border-color: #888;
+}
+
+/* Hide the default arrow on IE (older versions) */
+.language-selector select::-ms-expand,
+.language-selector-mobile select::-ms-expand {
+  display: none;
+}
+
+/* The custom arrow */
+.language-selector::after,
+.language-selector-mobile::after {
+  content: "▼";  /* or "▾" or any Unicode arrow character you like */
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  color: limegreen;  /* black arrow for a white box */
+  pointer-events: none;  /* arrow doesn’t block clicks */
+}
+
+
+/* Cookie consent banner (responsive) */
+#cookie-consent-banner {
+  /* hidden by default, shown via JS */
+  display: none;
+  position: fixed;
+  inset-inline-start: 0;             /* left: 0; in logical props */
+  inset-block-end: 0;               /* bottom: 0; in logical props */
+  width: 100vw;                     /* full viewport width */
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  z-index: 9999;
+
+  /* fluid padding with safe‑area support */
+  padding: clamp(0.75rem, 2vw, 1.5rem)
+           clamp(1rem, 5vw, 2rem);
+  padding-bottom: calc(
+    clamp(0.75rem, 2vw, 1.5rem)
+    + env(safe-area-inset-bottom)
+  );
+
+  /* flex layout with wrapping on narrow screens */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+/* constrain content width so it doesn’t stretch too far on ultra‑wide screens */
+/* banner wrapper */
+#cookie-consent-banner {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* you can add background, z‑index, etc. here */
+}
+
+/* constrain width, center everything and make it flex */
+#cookie-consent-banner .content {
+  display: inline-flex;               /* inline‑flex so it shrinks to fit */
+  flex-wrap: wrap;                    /* allow wrapping on very narrow screens */
+  align-items: center;                /* vertical centering */
+  justify-content: center;            /* horizontal centering */
+  gap: clamp(0.5rem, 1vw, 1rem);       /* small flexible gap between text & buttons */
+  max-width: clamp(300px, 80vw, 800px);
+  margin: auto;
+  padding: clamp(0.5rem, 2vw, 1rem);
+  text-align: center;
+}
+
+/* let the text wrap naturally but not force‑fill the entire row */
+#cookie-consent-banner span {
+  flex: 0 1 auto;
+  min-width: 0;                       /* allows flex children to shrink/wrap */
+}
+
+/* responsive buttons */
+#cookie-consent-banner button {
+  flex: 0 0 auto;
+  padding: clamp(0.25rem, 1vw, 0.75rem)
+           clamp(0.5rem, 2vw, 1rem);
+  border: none;
+  border-radius: 0.25rem;
+  background: var(--green);
+  color: var(--black);
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+#cookie-consent-banner button:hover {
+  opacity: 0.8;
+}
+
+/* stack vertically on really small viewports */
+@media (max-width: 360px) {
+  #cookie-consent-banner .content {
+    flex-direction: column;
+    text-align: center;
+    gap: clamp(0.5rem, 2vw, 1rem);  /* you could increase vertical gap if you like */
+  }
+}
+
+.footer-nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* allow links to wrap instead of overflowing */
+}
+
+.footer-nav a {
+  white-space: nowrap; /* prevent breaking words within a link */
+  font-size: 1rem; /* default size */
+  transition: font-size 0.3s ease;
+}
+
+/* Reduce font size on smaller screens */
+@media (max-width: 600px) {
+  .footer-nav a {
+    font-size: 0.85rem;
+  }
+}
+
+/* Further reduce font size on very small screens */
+@media (max-width: 400px) {
+  .footer-nav a {
+    font-size: 0.75rem;
+  }
+}
+
+.footer-nav {
+  font-size: clamp(0.75rem, 1vw + 0.5rem, 1rem);
+}
+
+
+
+
+/*
+Carasoul
+*/
+
+section#blogs {
+  margin-top: 0rem; /* Or your desired value, e.g., 1rem, 0 */
+  /* padding-top: 2rem; */ /* Alternatively, adjust padding if that's the cause */
+}
+
+/* Ensure box-sizing for all elements within the carousel wrapper for easier calculations */
+.custom-carousel-wrapper *,
+.custom-carousel-wrapper *::before,
+.custom-carousel-wrapper *::after {
+  box-sizing: border-box;
+}
+
+.custom-carousel-wrapper {
+  position: relative;
+  /* Padding for buttons to sit outside the main card viewport */
+  /* Adjust 4rem if buttons need more or less space from viewport edges */
+  padding: 1rem 4rem;
+  /* Consider a max-width on .container-small or .custom-carousel-wrapper itself */
+  /* to prevent the button area from becoming excessively wide on large screens. */
+}
+
+/* New Viewport Div: Handles clipping and defines the visible area for 3 cards */
+.carousel-viewport {
+  /* Desktop: 3 cards (260px each) + 2 gaps (1rem = 16px each) = 780px + 32px = 812px (content area) */
+  /* Add padding for side shadows of the first/last VISIBLE card (e.g., 40px each side for robust shadow display) */
+  /* Total width = 812px (content) + 2 * 40px (padding for shadows) = 892px */
+  width: calc((260px * 3) + (1rem * 2) + 80px); /* 892px */
+  padding: 0 40px; /* Creates space within the viewport for edge card shadows */
+  margin: 0 auto; /* Centers the viewport on the page */
+  overflow: hidden; /* Crucial: This clips content that scrolls outside */
+  position: relative; /* Establishes a positioning context for the UL if needed */
+}
+
+/* The UL containing all blog cards */
+.custom-blog-carousel { /* This is the UL */
+  display: flex;
+  gap: 1rem;
+  /* Original: padding: 1rem 0; */
+  /* Increase vertical padding, especially bottom, for hover shadow and scale */
+  padding: 2.5rem 0 4rem 0; /* e.g., 32px top, 48px bottom. Adjust as needed. */
+
+  overflow-x: visible; 
+  position: relative; 
+  transform: translateX(0px);
+  transition: transform 0.5s ease-in-out;
+}
+/* .custom-blog-carousel::-webkit-scrollbar { display: none; } */ /* Not needed */
+
+.custom-blog-carousel li {
+  flex: 0 0 260px; /* Desktop card width */
+  list-style: none;
+  cursor: pointer;
+  outline: none; /* Handled by focus-within on card-wrapper for visual cues if needed */
+  margin: 0;
+  padding: 0;
+  /* Ensure individual li items don't clip shadows from .card-wrapper */
+  overflow: visible;
+}
+
+.card-wrapper {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.12); /* Default shadow */
+  /* overflow: visible is key for shadows and scaled content to not be clipped by the card itself */
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Fill the li */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  position: relative; /* For z-index to work correctly on hover */
+}
+
+/* Hover/Focus effect on cards */
+.custom-blog-carousel li:hover .card-wrapper,
+.custom-blog-carousel li:focus-within .card-wrapper { /* focus-within for accessibility */
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3); /* Larger shadow */
+  transform: scale(1.08); /* Slight zoom effect */
+  z-index: 30; /* Ensure hovered card is above others but below carousel buttons */
+}
+
+.card-wrapper img {
+  width: 100%;
+  height: 140px; /* Desktop image height */
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.card-content {
+  padding: 16px 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-category {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 1.2px;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  color: #111;
+  line-height: 1.3;
+  flex-grow: 1; /* Allows title to take available space */
+}
+
+.card-link {
+  display: inline-block;
+  padding: 10px 18px;
+  font-weight: 600;
+  border-radius: 24px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  user-select: none; /* Prevents text selection on click */
+}
+
+.button.w-button.card-link {
+  padding: 10px 18px;
+  border-radius: 24px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-align: center;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+
+.card-link:hover, .card-link:focus {
+  background-color: #155ab6; /* Darker blue on hover/focus */
+  outline: none;
+  color: white;
+}
+
+/* Carousel Navigation Buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  font-size: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 31; /* Above hovered cards */
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.carousel-btn:hover, .carousel-btn:focus {
+  background: rgba(0, 0, 0, 0.8);
+  outline: none;
+}
+
+.prev-btn {
+  /* Positioned relative to .custom-carousel-wrapper's padding */
+  left: 8px;
+}
+
+.next-btn {
+  /* Positioned relative to .custom-carousel-wrapper's padding */
+  right: 8px;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 767px) {
+  .custom-carousel-wrapper {
+    /* Reduce padding on mobile if buttons feel too far from the content */
+    padding: 1rem 2rem;
+  }
+
+  .card-wrapper {
+    transition: none !important;
+  }
+
+  .custom-blog-carousel li:hover .card-wrapper,
+  .custom-blog-carousel li:focus-within .card-wrapper,
+  .custom-blog-carousel li:active .card-wrapper {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12) !important;
+    transform: none !important;
+    transition: none !important;
+    z-index: auto !important;
+  }
+
+  .carousel-viewport {
+    /* Mobile: 1 card (200px) + padding for its shadows (e.g., 20px each side) */
+    /* Total width = 200px (content) + 2 * 20px (padding) = 240px */
+    width: calc(200px + 40px);
+    padding: 2rem 0px; /* e.g., 2rem top/bottom, keeps 40px L/R for horizontal shadow */
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .custom-blog-carousel li {
+    flex: 0 0 200px; /* Mobile card width */
+  }
+
+  .card-wrapper img {
+    height: 110px; /* Mobile image height */
+  }
+
+  .card-content {
+    padding: 12px 16px; /* Mobile card content padding */
+  }
+
+  .carousel-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.6rem;
+    /* Adjust button position if wrapper padding changed significantly */
+    /* left/right: 4px; or similar if needed */
+  }
+  .prev-btn { left: 4px; } /* Example adjustment for tighter mobile padding */
+  .next-btn { right: 4px; }/* Example adjustment */
+}
+
+
+
+
+
+
+
+/* ===== Footer Addresses Container (grid for equal height cards) ===== */
+.footer-addresses {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* ===== Cards ===== */
+.footer-addresses .address-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: .5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  min-height: 112px;     /* keeps cards visually even */
+  height: 100%;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+.footer-addresses .address-card:hover {
+  border-color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.05);
+  transform: translateY(-1px);
+}
+
+/* ===== Header: icon + label aligned tightly ===== */
+.footer-addresses .addr-header {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  line-height: 1;
+}
+.footer-addresses .addr-icon {
+  color: rgba(255,255,255,0.8);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer-addresses .address-label {
+  margin: 0;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--light-grey, #b3b3b3);
+  font-size: clamp(10px, .78rem, .8rem);
+}
+
+/* ===== Address Typography (clean hierarchy) ===== */
+.address-lines {
+  display: grid;
+  gap: .2rem;
+  color: var(--white, #fff);
+  margin: 0;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 1) Street (primary line) */
+.address-lines .addr-street {
+  font-weight: 600;
+  letter-spacing: .01em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: .35rem;
+}
+.address-lines .addr-number { font-weight: 600; }
+.address-lines .addr-dot { opacity: .6; }
+
+/* 2) Secondary line (city/postal/region as needed) */
+.address-lines .addr-cityline {
+  opacity: .9;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  align-items: baseline;
+}
+.address-lines .addr-postal { font-weight: 500; letter-spacing: .015em; }
+.address-lines .addr-city { font-weight: 500; }
+.address-lines .addr-region { opacity: .8; }
+
+/* 3) Country as a small pill badge */
+.address-lines .addr-country {
+  display: inline-block;
+  margin-top: .2rem;
+  padding: .15rem .5rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.16);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .72rem;
+  color: var(--white, #fff);
+  opacity: .95;
+}
+
+/* ===== Responsive polish ===== */
+@media (max-width: 479px) {
+  .footer-addresses { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .address-lines { gap: .15rem; }
+  .address-lines .addr-country { font-size: .7rem; }
+}
+@media (min-width: 768px) {
+  /* Optional: push country pill to the right on larger screens */
+  .address-lines .addr-country { justify-self: end; }
+}
