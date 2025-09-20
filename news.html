@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PakEuropa News</title>
+
+  <link href="css/elysian-tennis.webflow.1919b59b5.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+
+  <style>
+  /* ====== News page custom styles (scoped) ====== */
+  .news-page {
+    --news-text: #111318;
+    --news-muted: #576074;
+    --news-border: #E7E7E9;
+    --news-surface: #fff;
+    --news-shadow: 0 6px 28px rgba(16,24,40,.06);
+    --news-radius: 14px;
+  }
+
+  /* Layout + alignment */
+  .news-page #news-container { max-width: 980px; margin: 32px auto 40px; padding: 0 16px; }
+  .news-page .news-hero,
+  .news-page .news-meta,
+  .news-page .news-body,
+  .news-page .news-gallery,
+  .news-page .news-end-card { text-align: left; }
+
+  /* Hero */
+  .news-hero { margin-bottom: 10px; }
+  .news-eyebrow { letter-spacing: .08em; text-transform: uppercase; color: var(--news-muted); font-size: .85rem; margin: 0 0 6px; }
+  .news-title {
+    margin: 2px 0 10px;
+    color: var(--news-text);
+    font-weight: 800;
+    line-height: 1.16;
+    /* bigger with tasteful tracking */
+    font-size: clamp(2.4rem, 1.4rem + 3.2vw, 3.4rem);
+    letter-spacing: .2px;
+  }
+  .news-subtitle {
+    margin: 0 0 8px;
+    color: var(--news-muted);
+    font-weight: 600;
+    /* smaller than title */
+    font-size: clamp(1.0rem, .9rem + .6vw, 1.25rem);
+  }
+
+  /* Meta */
+  .news-meta { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; color: var(--news-text); font-size: 1rem; margin: 8px 0 18px; }
+  .news-meta-item { display: inline-flex; gap: 8px; align-items: center; }
+  .news-meta-item svg { width: 16px; height: 16px; stroke: currentColor; opacity: .85; }
+
+  /* Body */
+  .news-body.w-richtext { color: var(--news-text); font-size: 1.06rem; line-height: 1.72; }
+  .news-body.w-richtext p { margin: 0 0 1rem; }
+
+  /* Gallery — edge-to-edge images (no cards), captions below */
+  .news-gallery { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin: 18px 0 10px; }
+  .news-gallery figure { margin: 0; }
+  .news-gallery img { display: block; width: 100%; height: auto; cursor: zoom-in; border-radius: 10px; }
+  .news-caption { margin-top: 8px; color: var(--news-muted); font-size: .95rem; }
+
+  /* End cards at the bottom */
+  .news-end { margin-top: 22px; }
+  .news-end-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .news-end-card { background: var(--news-surface); border: 1px solid var(--news-border); border-radius: var(--news-radius); box-shadow: var(--news-shadow); padding: 18px; }
+  .news-end-card h3 { margin: 0 0 10px; color: var(--news-text); font-weight: 800; font-size: 1.25rem; }
+  .news-thanks { list-style: none; padding: 0; margin: 0; }
+  .news-thanks li { margin: .35rem 0; color: var(--news-text); font-size: 1rem; }
+  .news-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .news-tag { display: inline-flex; align-items: center; padding: 6px 10px; border: 1px solid var(--news-border); border-radius: 999px; font-size: .95rem; color: var(--news-text); background: #fff; }
+
+  /* Lightbox modal */
+  .news-lightbox[hidden] { display: none !important; }
+  .news-lightbox { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; background: rgba(9,11,15,.78); backdrop-filter: blur(4px); }
+  .news-lightbox-inner { position: relative; max-width: 92vw; max-height: 86vh; display: grid; place-items: center; }
+  .news-lightbox img { max-width: 92vw; max-height: 72vh; border-radius: 12px; box-shadow: 0 10px 50px rgba(0,0,0,.35); }
+  .news-lightbox .nlb-caption { margin-top: 10px; color: #fff; font-size: 1rem; text-align: left; text-shadow: 0 1px 2px rgba(0,0,0,.7); max-width: 90vw; }
+  .nlb-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 999px; border: 1px solid rgba(255,255,255,.35); background: rgba(0,0,0,.35); color: #fff; display: grid; place-items: center; cursor: pointer; }
+  .nlb-prev { left: -56px; }
+  .nlb-next { right: -56px; }
+  .nlb-close { position: absolute; top: -52px; right: 0; transform: none; }
+
+  @media (max-width: 768px) {
+    .nlb-prev { left: 8px; }
+    .nlb-next { right: 8px; }
+    .nlb-close { top: -56px; right: 0; }
+  }
+
+    /* remove list bullets + keep grid */
+  .news-gallery {
+    list-style: none;         /* NEW */
+    padding-left: 0;          /* NEW */
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    margin: 18px 0 10px;
+  }
+
+  /* subtle divider between content and bottom cards */
+  .news-divider {
+    height: 1px;
+    background: var(--news-border);
+    margin: 22px 0 18px;
+  }
+
+  </style>
+</head>
+
+<body class="news-page">
+
+  <!-- Minimal header -->
+  <header style="background-color:black;color:white;position:relative;padding:10px 20px;font-family:Arial,sans-serif;">
+    <div style="display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;">
+      <a href="index.html" style="display:inline-block;">
+        <img src="assets/logo.png" alt="PakEuropa Logo" style="height:40px;" />
+      </a>
+      <div id="hamburgerBtn" style="cursor:pointer;width:30px;height:24px;display:flex;flex-direction:column;justify-content:space-between;">
+        <span style="display:block;height:4px;background:white;border-radius:2px;"></span>
+        <span style="display:block;height:4px;background:white;border-radius:2px;"></span>
+        <span style="display:block;height:4px;background:white;border-radius:2px;"></span>
+      </div>
+    </div>
+    <nav id="mobileNav" style="position:fixed;inset:0;background:black;color:white;display:none;flex-direction:column;padding:2rem;z-index:9999;">
+      <button id="closeNavBtn" style="align-self:flex-end;background:transparent;border:none;font-size:2rem;color:white;cursor:pointer;margin-bottom:2rem;">&times;</button>
+      <a href="index.html#products"   style="color:white;font-size:1.5rem;margin-bottom:1rem;text-decoration:none;">Products</a>
+      <a href="index.html#operations" style="color:white;font-size:1.5rem;margin-bottom:1rem;text-decoration:none;">Operations</a>
+      <a href="index.html#about"      style="color:white;font-size:1.5rem;margin-bottom:1rem;text-decoration:none;">About</a>
+      <a href="index.html#contact"    style="color:white;font-size:1.5rem;text-decoration:none;">Contact</a>
+    </nav>
+    <script>
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const mobileNav = document.getElementById('mobileNav');
+      const closeNavBtn = document.getElementById('closeNavBtn');
+      hamburgerBtn.addEventListener('click', () => mobileNav.style.display = 'flex');
+      closeNavBtn.addEventListener('click', () => mobileNav.style.display = 'none');
+    </script>
+  </header>
+
+  <main id="news-container" aria-live="polite"></main>
+
+  <!-- Modal lightbox -->
+  <div class="news-lightbox" aria-modal="true" role="dialog" hidden>
+    <div class="news-lightbox-inner">
+      <button class="nlb-btn nlb-close" aria-label="Close">✕</button>
+      <button class="nlb-btn nlb-prev" aria-label="Previous">‹</button>
+      <img alt="" />
+      <button class="nlb-btn nlb-next" aria-label="Next">›</button>
+      <div class="nlb-caption" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="background-color-black" style="padding: 2rem 0; margin-top: 2rem;">
+    <div class="container-large">
+      <div class="wrap_flex is-align-center is-justify-between" style="flex-wrap: wrap; gap: 1rem;">
+        <div class="footer-brand" style="display:flex;align-items:center;">
+          <img src="assets/logo.png" alt="PakEuropa Logo" style="height:40px;width:auto;" />
+        </div>
+        <nav class="footer-nav" style="display:flex;gap:1.5rem;">
+          <a href="index.html#home"       class="text-color-white" style="text-decoration:none;">Home</a>
+          <a href="index.html#products"   class="text-color-white" style="text-decoration:none;">Products</a>
+          <a href="index.html#operations" class="text-color-white" style="text-decoration:none;">Operations</a>
+          <a href="index.html#about"      class="text-color-white" style="text-decoration:none;">About</a>
+          <a href="index.html#contact"    class="text-color-white" style="text-decoration:none;">Contact</a>
+        </nav>
+        <div class="footer-social" style="display:flex;gap:1rem;align-items:center;">
+          <a href="https://www.linkedin.com/company/pakeuropa/" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-link">
+            <img src="assets/linkedin.svg" alt="LinkedIn" style="height:24px;width:24px;" />
+          </a>
+          <a href="https://www.facebook.com/PakEuropa" target="_blank" rel="noopener" aria-label="Facebook" class="social-link">
+            <img src="assets/fb_icon.svg" alt="Facebook" style="height:24px;width:24px;" />
+          </a>
+          <a href="https://www.instagram.com/pakeuropa/" target="_blank" rel="noopener" aria-label="Instagram" class="social-link">
+            <img src="assets/ig_icon.svg" alt="Instagram" style="height:24px;width:24px;" />
+          </a>
+        </div>
+      </div>
+      <div class="margin-top-16 text-color-lightgrey text-size-small" style="text-align:center;">
+        <p style="margin:0;">&copy; 2025 PakEuropa. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Load data, then render -->
+  <script src="js/blogs.js"></script>
+  <script>
+  (function () {
+    const id = new URLSearchParams(location.search).get('id');
+    const root = document.getElementById('news-container');
+
+    const el = (tag, cls = '', html = '') =>
+      Object.assign(document.createElement(tag),
+        cls ? { className: cls } : {},
+        html ? { innerHTML: html } : {}
+      );
+
+    const cleanCap = (s) => (s || '').replace(/\.\s*$/, ''); // removes a final trailing dot
+
+
+    if (typeof newsData === 'undefined' || !Array.isArray(newsData)) {
+      root.innerHTML = '<div class="container-large"><p>Data not loaded.</p></div>';
+      return;
+    }
+    const item = newsData.find(n => n.id === id);
+    if (!item) {
+      root.innerHTML = '<div class="container-large"><p>Sorry, this news item couldn\'t be found.</p></div>';
+      return;
+    }
+
+    const niceDate = (() => {
+      try { return new Date(item.eventDate).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}); }
+      catch { return item.eventDate; }
+    })();
+
+    /* ---------- Shell ---------- */
+    const section   = el('section', 'section background-color-white');
+    const container = el('div', 'container-large');
+    section.appendChild(container);
+
+    /* ---------- Hero ---------- */
+    const hero = el('div', 'news-hero');
+    hero.appendChild(el('p', 'news-eyebrow', item.category || 'NEWS'));
+    hero.appendChild(el('h1', 'news-title', item.title));
+    if (item.subtitle) hero.appendChild(el('p', 'news-subtitle', item.subtitle));
+    container.appendChild(hero);
+
+    const meta = el('div', 'news-meta');
+    meta.innerHTML = `
+      <span class="news-meta-item">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M8 2v3M16 2v3M3.5 9h17M5 6h14a2 2 0 0 1 2 2v10a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V8a2 2 0 0 1 2-2Z" stroke-width="1.6" stroke="currentColor"/></svg>
+        ${niceDate}
+      </span>
+      ${item.location ? `
+      <span class="news-meta-item">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z" stroke-width="1.6" stroke="currentColor"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        ${item.location}
+      </span>` : '' }
+    `;
+    container.appendChild(meta);
+
+    /* ---------- Body ---------- */
+    const body = el('div', 'news-body w-richtext');
+    body.innerHTML = (item.body || []).map(p => `<p>${p}</p>`).join('');
+    container.appendChild(body);
+
+    /* ---------- Gallery (simple full images + captions) + Lightbox ---------- */
+    if (item.images?.length) {
+      const gallery = el('ul', 'news-gallery');
+      item.images.forEach((img, i) => {
+        const li  = document.createElement('li');
+        const fig = document.createElement('figure');
+
+        const image = new Image();
+        image.src = img.src; image.alt = img.alt || item.title; image.loading = 'lazy';
+        image.addEventListener('click', () => openAt(i)); // open modal on click
+
+        fig.appendChild(image);
+        if (img.caption) fig.appendChild(el('figcaption', 'news-caption', cleanCap(img.caption)));
+
+
+        li.appendChild(fig);
+        gallery.appendChild(li);
+      });
+      container.appendChild(gallery);
+
+      // Lightbox
+      const lb = document.querySelector('.news-lightbox');
+      const lbImg = lb.querySelector('img');
+      const lbPrev = lb.querySelector('.nlb-prev');
+      const lbNext = lb.querySelector('.nlb-next');
+      const lbClose = lb.querySelector('.nlb-close');
+      const lbCap = lb.querySelector('.nlb-caption');
+
+      let idx = 0;
+      function openAt(i) {
+        idx = i;
+        const { src, alt, caption } = item.images[idx];
+        lbImg.src = src; lbImg.alt = alt || item.title;
+        lbCap.textContent = cleanCap(caption || '');
+        lb.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+      }
+      function close() { lb.setAttribute('hidden',''); document.body.style.overflow = ''; }
+      function prev()  { openAt((idx - 1 + item.images.length) % item.images.length); }
+      function next()  { openAt((idx + 1) % item.images.length); }
+
+      lbClose.addEventListener('click', close);
+      lbPrev .addEventListener('click', prev);
+      lbNext .addEventListener('click', next);
+      lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+      document.addEventListener('keydown', (e) => {
+        if (lb.hasAttribute('hidden')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'ArrowRight') next();
+      });
+    }
+
+    container.appendChild(el('div', 'news-divider')); // NEW: separator line
+
+    /* ---------- End cards (bigger bold titles) ---------- */
+    const end = el('div', 'news-end');
+    const grid = el('div', 'news-end-grid');
+
+    if (item.thanks?.length) {
+      const thanksCard = el('div', 'news-end-card');
+      thanksCard.appendChild(el('h3', '', 'Special thanks'));
+      const ul = el('ul', 'news-thanks');
+      item.thanks.forEach(t => ul.appendChild(el('li', '', t)));
+      thanksCard.appendChild(ul);
+      grid.appendChild(thanksCard);
+    }
+
+    if (item.tags?.length) {
+      const tagsCard = el('div', 'news-end-card');
+      tagsCard.appendChild(el('h3', '', 'Tags'));
+      const row = el('div', 'news-tags');
+      item.tags.forEach(tag => row.appendChild(el('span', 'news-tag', `#${tag}`)));
+      tagsCard.appendChild(row);
+      grid.appendChild(tagsCard);
+    }
+
+    if (grid.children.length) { end.appendChild(grid); container.appendChild(end); }
+
+    root.appendChild(section);
+  })();
+  </script>
+
+  <script src="js/jquery-3.5.1.min.js"></script>
+  <script src="js/webflow.adf43da44.js"></script>
+</body>
+</html>
